@@ -142,3 +142,181 @@
     color: var(--color-foreground);
   }
 }
+
+/* ===== AMUMA design system ===== */
+
+
+@theme {
+  --font-serif: "Cormorant Garamond", "Times New Roman", serif;
+  --font-sans: "Jost", "Helvetica Neue", Arial, sans-serif;
+
+  --color-sand-50: #faf6ef;
+  --color-sand-100: #f4ecdd;
+  --color-sand-200: #e9dcc3;
+  --color-sand-300: #dcc79f;
+  --color-ink-900: #14140f;
+  --color-ink-800: #1c1c15;
+  --color-ink-700: #24241b;
+  --color-bronze-400: #b99a63;
+  --color-bronze-500: #a5824c;
+  --color-bronze-600: #8c6b3c;
+  --color-moss-700: #3f4a35;
+
+  --breakpoint-xs: 360px;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-sand-50);
+  color: var(--color-ink-900);
+  font-size: 15px;
+  line-height: 1.6;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+@media (min-width: 768px) {
+  body { font-size: 16px; }
+}
+
+.font-serif {
+  font-family: var(--font-serif);
+}
+
+::selection {
+  background-color: var(--color-bronze-400);
+  color: #14140f;
+}
+
+/* Uniform eyebrow */
+.eyebrow {
+  font-family: var(--font-sans);
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  font-size: 10px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+@media (min-width: 768px) {
+  .eyebrow { font-size: 11px; letter-spacing: 0.3em; }
+}
+
+.divider-line {
+  width: 32px;
+  height: 1px;
+  background-color: currentColor;
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+@media (min-width: 768px) {
+  .divider-line { width: 40px; }
+}
+
+/* Uniform section container */
+.section-container {
+  width: 100%;
+  max-width: 80rem; /* 1280px = 7xl */
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 1.25rem; /* 20px */
+  padding-right: 1.25rem;
+}
+
+@media (min-width: 768px) {
+  .section-container { padding-left: 2rem; padding-right: 2rem; }
+}
+
+@media (min-width: 1024px) {
+  .section-container { padding-left: 2.5rem; padding-right: 2.5rem; }
+}
+
+/* Uniform section spacing */
+.section-spacing {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+@media (min-width: 768px) {
+  .section-spacing { padding-top: 6rem; padding-bottom: 6rem; }
+}
+
+@media (min-width: 1024px) {
+  .section-spacing { padding-top: 8rem; padding-bottom: 8rem; }
+}
+
+/* Uniform heading */
+.heading-display {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-size: 2rem;
+}
+
+@media (min-width: 768px) {
+  .heading-display { font-size: 2.75rem; }
+}
+
+@media (min-width: 1024px) {
+  .heading-display { font-size: 3.5rem; }
+}
+
+.heading-display-lg {
+  font-family: var(--font-serif);
+  font-weight: 300;
+  font-style: italic;
+  line-height: 1.05;
+  font-size: 2.5rem;
+}
+
+@media (min-width: 640px) {
+  .heading-display-lg { font-size: 3rem; }
+}
+
+@media (min-width: 768px) {
+  .heading-display-lg { font-size: 3.75rem; }
+}
+
+@media (min-width: 1024px) {
+  .heading-display-lg { font-size: 4.5rem; }
+}
+
+/* Ensure touch targets */
+button, a {
+  min-height: 0;
+}
+
+@media (max-width: 767px) {
+  button, a {
+    min-height: 44px;
+  }
+  nav a, header a {
+    min-height: 0;
+  }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.9s ease both;
+}
+
+/* Prevent horizontal scroll */
+html, body {
+  overflow-x: hidden;
+  max-width: 100vw;
+}
+
+section[id], footer[id] {
+  scroll-margin-top: 1rem;
+}
