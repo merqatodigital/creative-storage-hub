@@ -13,7 +13,12 @@ export async function uploadSiteMedia(file: File, folder = "uploads") {
   });
 
   if (error) throw error;
-  const publicUrl = supabase.storage.from(BUCKET).getPublicUrl(path).data.publicUrl;
+
+  // The bucket is private, so a long-lived signed link is used for the site.
+  const TEN_YEARS = 60 * 60 * 24 * 365 * 10;
+  const signed = await supabase.storage.from(BUCKET).createSignedUrl(path, TEN_YEARS);
+  if (signed.error) throw signed.error;
+  const publicUrl = signed.data.signedUrl;
 
   // Track the asset so the admin can browse everything that was uploaded.
   await supabase.from("media_assets").insert({

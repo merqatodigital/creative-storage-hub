@@ -1,7 +1,7 @@
 import type { MediaValue } from "../content/types";
 import { useRef, useState } from "react";
 import { cn } from "../utils/cn";
-import { isSupabaseConfigured, supabase } from "../integrations/supabase/client";
+import { isSupabaseConfigured, supabase } from "../integrations/supabase/siteConfig";
 import { uploadSiteMedia } from "../integrations/supabase/mediaRepository";
 import { formatFileSize, optimizeImage } from "./mediaProcessing";
 
