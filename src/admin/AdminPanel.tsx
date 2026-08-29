@@ -7,6 +7,8 @@ import { Text, Area, List, MediaField, Panel, Label, Slider, Toggle } from "./fi
 import { ThemeTab } from "./ThemeTab";
 import { MoreSectionsTab } from "./MoreSectionsTab";
 import { SocialLinksEditor } from "./SocialLinksEditor";
+import { CloudBar } from "./CloudBar";
+import { ApplicationsTab } from "./ApplicationsTab";
 
 const PASSKEY = "5309";
 
