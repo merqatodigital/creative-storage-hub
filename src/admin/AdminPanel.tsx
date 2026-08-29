@@ -126,6 +126,7 @@ export function AdminPanel({ open, onClose }: { open: boolean; onClose: () => vo
               {tab === "retreat" && <RetreatTab c={content} update={setContent} />}
               {tab === "more" && <MoreSectionsTab content={content} update={setContent} />}
               {tab === "footer" && <FooterDataTab c={content} update={setContent} replace={replaceContent} reset={resetContent} />}
+              {tab === "applications" && <ApplicationsTab />}
             </div>
           </div>
         </div>
