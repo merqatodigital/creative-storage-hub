@@ -1,12 +1,45 @@
 import { useState } from "react";
 import { useContent } from "../content/ContentContext";
 import { useSectionStyle } from "../theme/useSectionStyle";
+import {
+  applicationSchema,
+  submitApplication,
+} from "../integrations/supabase/applicationsRepository";
 
 export function Join() {
   const { content } = useContent();
   const { join, tiersSection } = content;
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const style = useSectionStyle("join");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    const form = new FormData(e.currentTarget);
+    const parsed = applicationSchema.safeParse({
+      first_name: String(form.get("first_name") ?? ""),
+      last_name: String(form.get("last_name") ?? ""),
+      email: String(form.get("email") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      country: String(form.get("country") ?? ""),
+      tier: String(form.get("tier") ?? ""),
+    });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Please check your details.");
+      return;
+    }
+    setSending(true);
+    try {
+      await submitApplication(parsed.data);
+      setSubmitted(true);
+    } catch {
+      setError("We couldn't send your application. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section id="join" style={style} className="section-spacing bg-sand-50">
@@ -50,28 +83,30 @@ export function Join() {
                 <p className="max-w-[260px] text-[13px] font-light leading-[1.6] text-sand-100/60">Application received. We'll reach out shortly.</p>
               </div>
             ) : (
-              <form className="mt-8 flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+              <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Field label="First Name" required />
-                  <Field label="Last Name" required />
-                  <Field label="Email" type="email" required />
-                  <Field label="Phone" required />
+                  <Field name="first_name" label="First Name" required />
+                  <Field name="last_name" label="Last Name" required />
+                  <Field name="email" label="Email" type="email" required />
+                  <Field name="phone" label="Phone" required />
                 </div>
-                <Field label="Country" required />
+                <Field name="country" label="Country" required />
 
                 <label className="flex flex-col gap-1.5">
                   <span className="text-[10px] uppercase tracking-[0.15em] text-sand-100/40">Tier</span>
-                  <select className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-sand-50 outline-none focus:border-bronze-400">
+                  <select name="tier" className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-sand-50 outline-none focus:border-bronze-400">
                     {tiersSection.tiers.map((t) => (
-                      <option key={t.id} value={t.id} className="bg-ink-900">
+                      <option key={t.id} value={t.name} className="bg-ink-900">
                         {t.name} — {t.price}
                       </option>
                     ))}
                   </select>
                 </label>
 
-                <button type="submit" className="mt-2 rounded-full bg-white py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink-900 hover:bg-sand-50">
-                  {join.submit}
+                {error && <p className="text-[12px] text-red-300">{error}</p>}
+
+                <button type="submit" disabled={sending} className="mt-2 rounded-full bg-white py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink-900 hover:bg-sand-50 disabled:opacity-50">
+                  {sending ? "Sending…" : join.submit}
                 </button>
               </form>
             )}
