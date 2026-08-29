@@ -83,28 +83,30 @@ export function Join() {
                 <p className="max-w-[260px] text-[13px] font-light leading-[1.6] text-sand-100/60">Application received. We'll reach out shortly.</p>
               </div>
             ) : (
-              <form className="mt-8 flex flex-col gap-4" onSubmit={(e) => { e.preventDefault(); setSubmitted(true); }}>
+              <form className="mt-8 flex flex-col gap-4" onSubmit={handleSubmit}>
                 <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                  <Field label="First Name" required />
-                  <Field label="Last Name" required />
-                  <Field label="Email" type="email" required />
-                  <Field label="Phone" required />
+                  <Field name="first_name" label="First Name" required />
+                  <Field name="last_name" label="Last Name" required />
+                  <Field name="email" label="Email" type="email" required />
+                  <Field name="phone" label="Phone" required />
                 </div>
-                <Field label="Country" required />
+                <Field name="country" label="Country" required />
 
                 <label className="flex flex-col gap-1.5">
                   <span className="text-[10px] uppercase tracking-[0.15em] text-sand-100/40">Tier</span>
-                  <select className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-sand-50 outline-none focus:border-bronze-400">
+                  <select name="tier" className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-sand-50 outline-none focus:border-bronze-400">
                     {tiersSection.tiers.map((t) => (
-                      <option key={t.id} value={t.id} className="bg-ink-900">
+                      <option key={t.id} value={t.name} className="bg-ink-900">
                         {t.name} — {t.price}
                       </option>
                     ))}
                   </select>
                 </label>
 
-                <button type="submit" className="mt-2 rounded-full bg-white py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink-900 hover:bg-sand-50">
-                  {join.submit}
+                {error && <p className="text-[12px] text-red-300">{error}</p>}
+
+                <button type="submit" disabled={sending} className="mt-2 rounded-full bg-white py-3.5 text-[11px] uppercase tracking-[0.2em] text-ink-900 hover:bg-sand-50 disabled:opacity-50">
+                  {sending ? "Sending…" : join.submit}
                 </button>
               </form>
             )}
