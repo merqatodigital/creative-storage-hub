@@ -80,7 +80,8 @@ export function AdminPanel({ open, onClose }: { open: boolean; onClose: () => vo
               <span className="text-[10px] uppercase tracking-[0.2em] text-ink-900/40">Simple mode · Full control when needed</span>
             </div>
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex flex-wrap items-center gap-2">
+            <CloudBar />
             <button onClick={() => { if (confirm("Reset all content?")) resetContent(); }} className="rounded-full border border-ink-900/10 px-3 py-2 text-[10px] uppercase tracking-[0.15em] text-ink-900/50 hover:border-red-300 hover:text-red-600">Reset</button>
             <button onClick={onClose} className="rounded-full bg-ink-900 px-5 py-2.5 text-[10px] uppercase tracking-[0.2em] text-white hover:bg-bronze-500">Done</button>
           </div>
