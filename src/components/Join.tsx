@@ -1,12 +1,45 @@
 import { useState } from "react";
 import { useContent } from "../content/ContentContext";
 import { useSectionStyle } from "../theme/useSectionStyle";
+import {
+  applicationSchema,
+  submitApplication,
+} from "../integrations/supabase/applicationsRepository";
 
 export function Join() {
   const { content } = useContent();
   const { join, tiersSection } = content;
   const [submitted, setSubmitted] = useState(false);
+  const [sending, setSending] = useState(false);
+  const [error, setError] = useState("");
   const style = useSectionStyle("join");
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("");
+    const form = new FormData(e.currentTarget);
+    const parsed = applicationSchema.safeParse({
+      first_name: String(form.get("first_name") ?? ""),
+      last_name: String(form.get("last_name") ?? ""),
+      email: String(form.get("email") ?? ""),
+      phone: String(form.get("phone") ?? ""),
+      country: String(form.get("country") ?? ""),
+      tier: String(form.get("tier") ?? ""),
+    });
+    if (!parsed.success) {
+      setError(parsed.error.issues[0]?.message ?? "Please check your details.");
+      return;
+    }
+    setSending(true);
+    try {
+      await submitApplication(parsed.data);
+      setSubmitted(true);
+    } catch {
+      setError("We couldn't send your application. Please try again.");
+    } finally {
+      setSending(false);
+    }
+  };
 
   return (
     <section id="join" style={style} className="section-spacing bg-sand-50">
