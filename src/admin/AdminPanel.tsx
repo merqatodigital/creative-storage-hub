@@ -24,6 +24,7 @@ const TABS = [
   { id: "retreat", label: "Retreat" },
   { id: "more", label: "More Sections" },
   { id: "footer", label: "Footer & Data" },
+  { id: "applications", label: "Applications" },
 ] as const;
 
 type TabId = (typeof TABS)[number]["id"];
