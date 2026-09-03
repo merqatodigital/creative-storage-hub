@@ -1,3 +1,4 @@
+import type { Json } from "./types";
 import type { Content } from "../../content/types";
 import { supabase } from "./client";
 
