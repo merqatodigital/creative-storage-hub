@@ -24,7 +24,7 @@ export async function submitApplication(input: ApplicationInput) {
   const parsed = applicationSchema.parse(input);
   const { error } = await supabase
     .from("applications")
-    .insert({ ...parsed, status: "new" });
+    .insert({ ...parsed, status: "new" } as never);
   if (error) throw error;
 }
 

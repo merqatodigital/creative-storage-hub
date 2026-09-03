@@ -126,16 +126,7 @@ export function List({
   );
 }
 
-const MAX_LOCAL_VIDEO_MB = 2;
-
-function fileToDataURL(file: File): Promise<string> {
-  return new Promise((res, rej) => {
-    const reader = new FileReader();
-    reader.onload = () => res(reader.result as string);
-    reader.onerror = rej;
-    reader.readAsDataURL(file);
-  });
-}
+const MAX_UPLOAD_MB = 50;
 
 export function MediaField({
   label,
@@ -159,49 +150,40 @@ export function MediaField({
     setError("");
 
     try {
-      // Once connected to Supabase, files belong in Storage rather than the
-      // browser. The returned public URL keeps site content lightweight.
-      if (isSupabaseConfigured && supabase) {
-        const { data } = await supabase.auth.getSession();
-        if (data.session) {
-          try {
-            const src = await uploadSiteMedia(
-              file,
-              type === "image" ? "images" : "videos"
-            );
-            onChange({ ...value, type, src });
-            setMessage(`${formatFileSize(file.size)} uploaded to site storage.`);
-            return;
-          } catch {
-            // The current Supabase user may not have the admin role yet.
-            // Images can still use the optimized local fallback below.
-          }
-        }
-      }
-
-      if (type === "image") {
-        const result = await optimizeImage(file);
-        onChange({ ...value, type, src: result.dataUrl });
-        const dimensions = result.width
-          ? ` · ${result.width} × ${result.height}px`
-          : "";
-        setMessage(
-          `${formatFileSize(result.originalBytes)} optimized to ${formatFileSize(
-            result.outputBytes
-          )}${dimensions}.`
-        );
-        return;
-      }
-
       const sizeMB = file.size / (1024 * 1024);
-      if (sizeMB > MAX_LOCAL_VIDEO_MB) {
+      if (sizeMB > MAX_UPLOAD_MB) {
         throw new Error(
-          `Video is ${sizeMB.toFixed(1)} MB. Connect Supabase for videos larger than ${MAX_LOCAL_VIDEO_MB} MB.`
+          `File is ${sizeMB.toFixed(1)} MB. The maximum upload size is ${MAX_UPLOAD_MB} MB.`
         );
       }
-      const src = await fileToDataURL(file);
+
+      if (!isSupabaseConfigured || !supabase) {
+        throw new Error("Site storage is unavailable right now.");
+      }
+
+      const { data } = await supabase.auth.getSession();
+      if (!data.session) {
+        throw new Error(
+          "Sign in as admin in the cloud bar above to upload media."
+        );
+      }
+
+      // Images are optimized before upload; videos are uploaded as-is.
+      let payload: File = file;
+      if (type === "image" && file.type !== "image/svg+xml") {
+        const result = await optimizeImage(file);
+        const blob = await (await fetch(result.dataUrl)).blob();
+        payload = new File([blob], `${file.name.replace(/\.[^.]+$/, "")}.webp`, {
+          type: "image/webp",
+        });
+      }
+
+      const src = await uploadSiteMedia(
+        payload,
+        type === "image" ? "images" : "videos"
+      );
       onChange({ ...value, type, src });
-      setMessage(`${formatFileSize(file.size)} video saved locally.`);
+      setMessage(`${formatFileSize(payload.size)} uploaded to site storage.`);
     } catch (uploadError) {
       setError(
         uploadError instanceof Error

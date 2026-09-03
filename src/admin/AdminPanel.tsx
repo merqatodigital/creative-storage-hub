@@ -178,8 +178,8 @@ function HeaderTab({ c, update }: P) {
         <div className="flex flex-col gap-2">
           {c.header.nav.map((n, i) => (
             <div key={i} className="flex gap-2">
-              <input value={n.label} onChange={(e) => update((p) => { const nav = [...p.header.nav]; nav[i] = { ...nav[i], label: e.target.value }; return { ...p, header: { ...p.header, nav } }; })} className="flex-1 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900" placeholder="Label" />
-              <input value={n.href} onChange={(e) => update((p) => { const nav = [...p.header.nav]; nav[i] = { ...nav[i], href: e.target.value }; return { ...p, header: { ...p.header, nav } }; })} className="w-28 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900" placeholder="#anchor" />
+              <input value={n.label} onChange={(e) => update((p) => { const nav = [...p.header.nav]; nav[i] = { ...nav[i]!, label: e.target.value }; return { ...p, header: { ...p.header, nav } }; })} className="flex-1 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900" placeholder="Label" />
+              <input value={n.href} onChange={(e) => update((p) => { const nav = [...p.header.nav]; nav[i] = { ...nav[i]!, href: e.target.value }; return { ...p, header: { ...p.header, nav } }; })} className="w-28 rounded-lg border border-ink-900/10 bg-white px-3 py-2 text-sm outline-none focus:border-ink-900" placeholder="#anchor" />
               <button onClick={() => update((p) => ({ ...p, header: { ...p.header, nav: p.header.nav.filter((_, j) => j !== i) } }))} className="rounded-lg border border-ink-900/10 px-2 text-ink-900/40 hover:text-red-600">×</button>
             </div>
           ))}
@@ -275,7 +275,7 @@ function DestinationsTab({ c, update }: P) {
       <Text label="Heading" value={s.title} onChange={(v) => update((p) => ({ ...p, destinations: { ...p.destinations, title: v } }))} />
       <Area label="Description" value={s.description} onChange={(v) => update((p) => ({ ...p, destinations: { ...p.destinations, description: v } }))} rows={3} />
       <MediaField label="Feature image / video" value={s.image} onChange={(v) => update((p) => ({ ...p, destinations: { ...p.destinations, image: v } }))} />
-      <List label="Philippines places" items={s.groups[0]?.items || []} onChange={(v) => update((p) => { const groups = [...p.destinations.groups]; groups[0] = { ...groups[0], items: v }; return { ...p, destinations: { ...p.destinations, groups } }; })} />
+      <List label="Philippines places" items={s.groups[0]?.items || []} onChange={(v) => update((p) => { const groups = [...p.destinations.groups]; groups[0] = { ...groups[0]!, items: v }; return { ...p, destinations: { ...p.destinations, groups } }; })} />
     </Panel>
   );
 }
@@ -292,8 +292,8 @@ function TiersTab({ c, update }: P) {
             <span className="text-[10px] text-ink-900/40">{t.price}</span>
           </div>
           <div className="grid grid-cols-2 gap-2">
-            <input value={t.name} onChange={(e) => update((p) => { const tiers = [...p.tiersSection.tiers]; tiers[i] = { ...tiers[i], name: e.target.value }; return { ...p, tiersSection: { ...p.tiersSection, tiers } }; })} className="rounded border border-ink-900/10 px-2 py-1.5 text-xs" placeholder="Name" />
-            <input value={t.price} onChange={(e) => update((p) => { const tiers = [...p.tiersSection.tiers]; tiers[i] = { ...tiers[i], price: e.target.value }; return { ...p, tiersSection: { ...p.tiersSection, tiers } }; })} className="rounded border border-ink-900/10 px-2 py-1.5 text-xs" placeholder="Price" />
+            <input value={t.name} onChange={(e) => update((p) => { const tiers = [...p.tiersSection.tiers]; tiers[i] = { ...tiers[i]!, name: e.target.value }; return { ...p, tiersSection: { ...p.tiersSection, tiers } }; })} className="rounded border border-ink-900/10 px-2 py-1.5 text-xs" placeholder="Name" />
+            <input value={t.price} onChange={(e) => update((p) => { const tiers = [...p.tiersSection.tiers]; tiers[i] = { ...tiers[i]!, price: e.target.value }; return { ...p, tiersSection: { ...p.tiersSection, tiers } }; })} className="rounded border border-ink-900/10 px-2 py-1.5 text-xs" placeholder="Price" />
           </div>
         </div>
       ))}

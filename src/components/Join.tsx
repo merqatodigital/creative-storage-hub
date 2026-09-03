@@ -117,13 +117,13 @@ export function Join() {
   );
 }
 
-function Field({ label, required, type = "text" }: { label: string; required?: boolean; type?: string }) {
+function Field({ label, name, required, type = "text" }: { label: string; name?: string; required?: boolean; type?: string }) {
   return (
     <label className="flex flex-col gap-1.5">
       <span className="text-[10px] uppercase tracking-[0.15em] text-sand-100/40">
         {label} {required && "*"}
       </span>
-      <input type={type} required={required} className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-white outline-none placeholder:text-white/30 focus:border-bronze-400" />
+      <input name={name} type={type} required={required} className="rounded-xl border border-white/10 bg-white/[0.04] px-4 py-3 text-[14px] font-light text-white outline-none placeholder:text-white/30 focus:border-bronze-400" />
     </label>
   );
 }

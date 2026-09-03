@@ -46,7 +46,7 @@ export function SectionHeading({
         className
       )}
     >
-      {eyebrow && <Eyebrow light={light}>{eyebrow}</Eyebrow>}
+      {eyebrow && <Eyebrow light={light ?? false}>{eyebrow}</Eyebrow>}
       <h2
         className={cn(
           "heading-display max-w-3xl",

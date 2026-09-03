@@ -20,7 +20,7 @@ export function SocialLinksEditor({
 }) {
   const update = (index: number, patch: Partial<SocialLink>) => {
     const next = [...links];
-    next[index] = { ...next[index], ...patch };
+    next[index] = { ...next[index]!, ...patch };
     onChange(next);
   };
 

@@ -2,7 +2,7 @@ import type { Content, MediaValue } from "./types";
 import { PALETTES } from "../theme/presets";
 
 const noMedia = (alt: string): MediaValue => ({ type: "none", src: "", alt });
-const amuma = PALETTES[0];
+const amuma = PALETTES[0]!;
 
 export const defaultContent: Content = {
   theme: {
