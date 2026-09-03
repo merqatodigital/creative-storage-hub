@@ -15,7 +15,11 @@ type Ctx = {
   loaded: boolean;
 };
 
-const ContentCtx = createContext<Ctx | null>(null);
+// Keep one context instance even if this module is duplicated (HMR / mixed graphs),
+// otherwise consumers read a different context than the provider writes to.
+const globalStore = globalThis as unknown as { __amumaContentCtx?: React.Context<Ctx | null> };
+const ContentCtx = globalStore.__amumaContentCtx ?? createContext<Ctx | null>(null);
+globalStore.__amumaContentCtx = ContentCtx;
 
 function deepMerge<T>(def: T, incoming: unknown): T {
   if (
