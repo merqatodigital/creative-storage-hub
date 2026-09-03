@@ -126,16 +126,7 @@ export function List({
   );
 }
 
-const MAX_LOCAL_VIDEO_MB = 2;
-
-function fileToDataURL(file: File): Promise<string> {
-  return new Promise((res, rej) => {
-    const reader = new FileReader();
-    reader.onload = () => res(reader.result as string);
-    reader.onerror = rej;
-    reader.readAsDataURL(file);
-  });
-}
+const MAX_UPLOAD_MB = 50;
 
 export function MediaField({
   label,
