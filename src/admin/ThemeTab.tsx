@@ -69,7 +69,7 @@ export function ThemeTab({ c, update }: Props) {
 
   const applyPreset = (id: string) => {
     const palette = PALETTES.find((item) => item.id === id);
-    const pair = FONT_PAIRS.find((item) => item.id === id) ?? FONT_PAIRS[0];
+    const pair = FONT_PAIRS.find((item) => item.id === id) ?? FONT_PAIRS[0]!;
     if (!palette) return;
     update((prev) => ({
       ...prev,

@@ -20,7 +20,7 @@ export async function publishContent(content: Content): Promise<void> {
   const { error } = await supabase.from("site_content").upsert(
     {
       id: SITE_CONTENT_ID,
-      content: content as unknown as Record<string, unknown>,
+      content: content as unknown as Json,
       updated_at: new Date().toISOString(),
     },
     { onConflict: "id" },
