@@ -132,7 +132,7 @@ function updateTier(
 ) {
   update((prev) => {
     const tiers = [...prev.tiersSection.tiers];
-    tiers[index] = { ...tiers[index], ...patch };
+    tiers[index] = { ...tiers[index]!, ...patch };
     return { ...prev, tiersSection: { ...prev.tiersSection, tiers } };
   });
 }
@@ -144,7 +144,7 @@ function updateExperience(
 ) {
   update((prev) => {
     const items = [...prev.experience.items];
-    items[index] = { ...items[index], ...patch };
+    items[index] = { ...items[index]!, ...patch };
     return { ...prev, experience: { ...prev.experience, items } };
   });
 }
